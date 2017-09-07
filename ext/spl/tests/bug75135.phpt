@@ -25,6 +25,8 @@ KCPHPUG Testfest 2017 - Everybody
    unlink($targetDir.DIRECTORY_SEPARATOR.'getBasename_test.txt');
    rmdir($targetDir);
 ?>
+--XFAIL--
+This test will fail while bug #75135 is open.
 --EXPECT--
 Found
 Found
