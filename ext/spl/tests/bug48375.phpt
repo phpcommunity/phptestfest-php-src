@@ -4,6 +4,8 @@ Bug #48375 (AppendIterator::append() never ends, which has SplFileObject as inne
  KCPHPUG Testfest 2017 - Eric Poe
 --FILE--
 <?php
+set_time_limit(5); // Fail faster due to this bug causing a timeout
+
 $it = new AppendIterator();
 $fileIt = new SplFileObject('data://text/plain;base64,QSBsaW5l', 'r'); // "A line"
 $it->append($fileIt);
