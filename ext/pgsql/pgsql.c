@@ -1194,6 +1194,24 @@ PHP_MINIT_FUNCTION(pgsql)
 	REGISTER_LONG_CONSTANT("PGSQL_DIAG_SOURCE_FILE", PG_DIAG_SOURCE_FILE, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("PGSQL_DIAG_SOURCE_LINE", PG_DIAG_SOURCE_LINE, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("PGSQL_DIAG_SOURCE_FUNCTION", PG_DIAG_SOURCE_FUNCTION, CONST_CS | CONST_PERSISTENT);
+#ifdef PG_DIAG_SCHEMA_NAME
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_SCHEMA_NAME", PG_DIAG_SCHEMA_NAME, CONST_CS | CONST_PERSISTENT);
+#endif
+#ifdef PG_DIAG_TABLE_NAME
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_TABLE_NAME", PG_DIAG_TABLE_NAME, CONST_CS | CONST_PERSISTENT);
+#endif
+#ifdef PG_DIAG_COLUMN_NAME
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_COLUMN_NAME", PG_DIAG_COLUMN_NAME, CONST_CS | CONST_PERSISTENT);
+#endif
+#ifdef PG_DIAG_DATATYPE_NAME
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_DATATYPE_NAME", PG_DIAG_DATATYPE_NAME, CONST_CS | CONST_PERSISTENT);
+#endif
+#ifdef PG_DIAG_CONSTRAINT_NAME
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_CONSTRAINT_NAME", PG_DIAG_CONSTRAINT_NAME, CONST_CS | CONST_PERSISTENT);
+#endif
+#ifdef PG_DIAG_SEVERITY_NONLOCALIZED
+	REGISTER_LONG_CONSTANT("PGSQL_DIAG_SEVERITY_NONLOCALIZED", PG_DIAG_SEVERITY_NONLOCALIZED, CONST_CS | CONST_PERSISTENT);
+#endif
 #endif
 	/* pg_convert options */
 	REGISTER_LONG_CONSTANT("PGSQL_CONV_IGNORE_DEFAULT", PGSQL_CONV_IGNORE_DEFAULT, CONST_CS | CONST_PERSISTENT);
@@ -1509,20 +1527,6 @@ err:
 	RETURN_FALSE;
 }
 /* }}} */
-
-#if 0
-/* {{{ php_pgsql_get_default_link
- */
-static int php_pgsql_get_default_link(INTERNAL_FUNCTION_PARAMETERS)
-{
-	if (PGG(default_link)==-1) { /* no link opened yet, implicitly open one */
-		ht = 0;
-		php_pgsql_do_connect(INTERNAL_FUNCTION_PARAM_PASSTHRU,0);
-	}
-	return PGG(default_link);
-}
-/* }}} */
-#endif
 
 /* {{{ proto resource pg_connect(string connection_string[, int connect_type] | [string host, string port [, string options [, string tty,]]] string database)
    Open a PostgreSQL connection */
@@ -7060,7 +7064,7 @@ PHP_PGSQL_API int php_pgsql_result2array(PGresult *pg_result, zval *ret_array, l
 	char *field_name;
 	size_t num_fields;
 	int pg_numrows, pg_row;
-	uint i;
+	uint32_t i;
 	assert(Z_TYPE_P(ret_array) == IS_ARRAY);
 
 	if ((pg_numrows = PQntuples(pg_result)) <= 0) {

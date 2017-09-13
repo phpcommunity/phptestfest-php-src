@@ -37,6 +37,9 @@ typedef struct _func_info_t {
 	info_func_t info_func;
 } func_info_t;
 
+/* MSVC defines its own IN macro, undefine it here */
+#undef IN
+
 #define F0(name, info) \
 	{name, sizeof(name)-1, (FUNC_MAY_WARN | (info)), NULL}
 #define F1(name, info) \
@@ -221,7 +224,7 @@ static const func_info_t func_infos[] = {
 	F0("gc_disable",              MAY_BE_NULL),
 	F0("func_num_args",           MAY_BE_LONG),
 	FN("func_get_arg",            UNKNOWN_INFO),
-	F1("func_get_args",           MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_LONG | MAY_BE_ARRAY_OF_ANY | MAY_BE_ARRAY_OF_REF),
+	F1("func_get_args",           MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_LONG | MAY_BE_ARRAY_OF_ANY),
 	FC("strlen",                  zend_strlen_info),
 	FC("strcmp",                  zend_l_ss_info),
 	FC("strncmp",                 zend_lb_ssn_info),
@@ -282,8 +285,8 @@ static const func_info_t func_infos[] = {
 	F1("wordwrap",                     MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F1("htmlspecialchars",             MAY_BE_NULL | MAY_BE_STRING),
 	F1("htmlentities",                 MAY_BE_NULL | MAY_BE_STRING),
-	F1("html_entity_decode",           MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
-	F1("htmlspecialchars_decode",      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
+	FN("html_entity_decode",           MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
+	FN("htmlspecialchars_decode",      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F1("get_html_translation_table",   MAY_BE_NULL | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_STRING | MAY_BE_ARRAY_OF_STRING),
 	F1("sha1",                         MAY_BE_NULL | MAY_BE_STRING),
 	F1("sha1_file",                    MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
@@ -338,7 +341,7 @@ static const func_info_t func_infos[] = {
 #ifdef HAVE_STRFMON
 	F1("money_format",                 MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 #endif
-	F1("substr",                       MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
+	FN("substr",                       MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	FN("substr_replace",               MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_STRING),
 	F1("quotemeta",                    MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F1("ucfirst",                      MAY_BE_NULL | MAY_BE_STRING),
@@ -541,9 +544,9 @@ static const func_info_t func_infos[] = {
 	F1("show_source",                  MAY_BE_FALSE | MAY_BE_STRING),
 	F1("highlight_string",             MAY_BE_FALSE | MAY_BE_TRUE | MAY_BE_STRING),
 	F1("php_strip_whitespace",         MAY_BE_FALSE | MAY_BE_STRING),
-	F1("ini_get",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
+	FN("ini_get",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F1("ini_get_all",                  MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_STRING | MAY_BE_ARRAY_OF_NULL | MAY_BE_ARRAY_OF_STRING | MAY_BE_ARRAY_OF_ARRAY),
-	F1("ini_set",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
+	FN("ini_set",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F1("ini_alter",                    MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 	F0("ini_restore",                  MAY_BE_NULL),
 	F1("get_include_path",             MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
@@ -572,7 +575,7 @@ static const func_info_t func_infos[] = {
 #ifdef HAVE_GETHOSTNAME
 	F1("gethostname",                  MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 #endif
-#if defined(PHP_WIN32) || (HAVE_DNS_SEARCH_FUNC && !(defined(__BEOS__) || defined(NETWARE)))
+#if defined(PHP_WIN32) || HAVE_DNS_SEARCH_FUNC
 	F0("dns_check_record",             MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 	F0("checkdnsrr",                   MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 # if defined(PHP_WIN32) || HAVE_FULL_DNS_FUNCS
@@ -586,7 +589,7 @@ static const func_info_t func_infos[] = {
 	F0("doubleval",                    MAY_BE_NULL | MAY_BE_DOUBLE),
 	FN("strval",                       MAY_BE_NULL | MAY_BE_STRING),
 	F0("boolval",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
-	F1("gettype",                      MAY_BE_NULL | MAY_BE_STRING),
+	FN("gettype",                      MAY_BE_NULL | MAY_BE_STRING),
 	F0("settype",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 	FC("is_null",                      zend_is_type_info),
 	F0("is_resource",                  MAY_BE_FALSE | MAY_BE_TRUE), // TODO: inline with support for closed resources
@@ -686,7 +689,7 @@ static const func_info_t func_infos[] = {
 	F0("socket_set_timeout",           MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 #endif
 	F1("socket_get_status",            MAY_BE_NULL | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_STRING | MAY_BE_ARRAY_OF_ANY),
-#if (!defined(__BEOS__) && !defined(NETWARE) && HAVE_REALPATH) || defined(ZTS)
+#if HAVE_REALPATH || defined(ZTS)
 	F1("realpath",                     MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING),
 #endif
 #ifdef HAVE_FNMATCH
@@ -731,10 +734,8 @@ static const func_info_t func_infos[] = {
 	F0("is_link",                      MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 	F1("stat",                         MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_FALSE | MAY_BE_ARRAY_OF_TRUE | MAY_BE_ARRAY_OF_LONG | MAY_BE_ARRAY_OF_STRING),
 	F1("lstat",                        MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_FALSE | MAY_BE_ARRAY_OF_TRUE | MAY_BE_ARRAY_OF_LONG | MAY_BE_ARRAY_OF_STRING),
-#ifndef NETWARE
 	F0("chown",                        MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 	F0("chgrp",                        MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
-#endif
 #if HAVE_LCHOWN
 	F0("lchown",                       MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_TRUE),
 #endif
@@ -927,7 +928,7 @@ static const func_info_t func_infos[] = {
 	FN("preg_replace_callback",	                MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_STRING | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_STRING),
 	F1("preg_filter",				            MAY_BE_FALSE | MAY_BE_STRING | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_STRING),
 	F1("preg_split",				            MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_LONG | MAY_BE_ARRAY_OF_STRING | MAY_BE_ARRAY_OF_ARRAY),
-	F1("preg_quote",				            MAY_BE_NULL | MAY_BE_STRING),
+	FN("preg_quote",				            MAY_BE_NULL | MAY_BE_STRING),
 	F1("preg_grep",				                MAY_BE_NULL | MAY_BE_FALSE | MAY_BE_ARRAY | MAY_BE_ARRAY_KEY_ANY | MAY_BE_ARRAY_OF_REF | MAY_BE_ARRAY_OF_ANY),
 	F0("preg_last_error",			            MAY_BE_NULL | MAY_BE_LONG),
 
