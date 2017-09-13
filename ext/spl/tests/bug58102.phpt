@@ -1,5 +1,5 @@
 --TEST--
-Bug #581092 (Cannot pass COUNT_RECURSIVE to Countable)
+Bug #58102 (Cannot pass COUNT_RECURSIVE to Countable)
 --CREDITS--
 KCPHPUG TestFest 2017 - Eric Poe
 --FILE--
