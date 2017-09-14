@@ -10,12 +10,19 @@ var_dump($f instanceof SplFileObject);
 
 $f->fwrite("line 1");
 
-echo ("Begin iteration" . PHP_EOL);
+echo "Begin iteration" . PHP_EOL;
 $f->rewind();
 var_dump($f->valid());
 var_dump($f->eof());
 var_dump($f->current());
 var_dump($f->valid());
+var_dump($f->eof());
+
+echo "Show that problem is with 'current' and not 'valid'" . PHP_EOL;
+$f->rewind();
+var_dump($f->valid());
+var_dump($f->eof());
+var_dump($f->current());
 var_dump($f->eof());
 ?>
 --XFAIL--
@@ -28,4 +35,9 @@ bool(true)
 bool(false)
 string(6) "line 1"
 bool(true)
+bool(false)
+Show that problem is with 'current' and not 'valid'
 bool(true)
+bool(false)
+string(6) "line 1"
+bool(false)
