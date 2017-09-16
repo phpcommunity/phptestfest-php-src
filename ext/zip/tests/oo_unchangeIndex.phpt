@@ -1,7 +1,7 @@
 --TEST--
 Test basic ZipArchive::unchangeIndex() Method
 --CREDIT--
-PHP TestFest 2017 - Bergfreunde, Florian Engelhardt <florian.engelhardt@bergfreunde.de>
+PHP TestFest 2017 - Bergfreunde, Florian Engelhardt
 --SKIPIF--
 <?php if (!extension_loaded("zip")) print "skip"; ?>
 --FILE--
