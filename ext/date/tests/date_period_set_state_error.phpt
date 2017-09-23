@@ -1,5 +1,5 @@
 --TEST--
-Testing passing integer to DateInterval::__set_state should fail.
+Testing passing integer to DatePeriod::__set_state should fail.
 --CREDITS--
 Oscar Merida <oscar@musketeers.me>
 #phptestfest2017
