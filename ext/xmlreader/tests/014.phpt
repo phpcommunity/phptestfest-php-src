@@ -21,8 +21,13 @@ while ($reader->read()) {
     if ($reader->nodeType != XMLREADER::END_ELEMENT) {
         // Find a node to try modifying
         if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'book') {
-            // Try to set the value of the node from book1 to movie1
+            // Try to set the value of the element from book1 to movie1
             $reader->value = 'movie1';
+            // Try to set the value of the first "num" attribute from "1" to "num attribute 1"
+            $attr = $reader->moveToFirstAttribute();
+            $reader->value = 'num attribute 1';
+            // Try to set the name of the first attribute from "num" to "number"
+            $reader->name = 'number';
         }
     }
 }
@@ -34,5 +39,8 @@ unlink($filename);
 ===DONE===
 --EXPECTF--
 Warning: main(): Cannot write to read-only property in %s on line %d
-===DONE===
 
+Warning: main(): Cannot write to read-only property in %s on line %d
+
+Warning: main(): Cannot write to read-only property in %s on line %d
+===DONE===
