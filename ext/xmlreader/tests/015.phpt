@@ -34,6 +34,16 @@ while ($reader->read()) {
             $attr = $reader->moveToAttributeNs('isbn', 'http://www.ns2.namespace.org/');
             echo $reader->name . ": ";
             echo $reader->value . "\n";
+
+            // Try moving to an attribute that doesn't exist
+            $attr = $reader->moveToAttributeNs('elephpant', 'http://www.ns2.namespace.org/');
+            // That move should return a result of false, because there is no elephpant attribute (in any namespace)
+            if (!$attr) {
+                echo "Attribute does not exist\n";
+            }
+            // Node pointer should still be aat the last valid node
+            echo $reader->name . ": ";
+            echo $reader->value . "\n";
         }
     }
 }
@@ -46,5 +56,7 @@ unlink($filename);
 --EXPECT--
 ns1:idx: 3
 ns2:idx: 2
+ns2:isbn: 4
+Attribute does not exist
 ns2:isbn: 4
 ===DONE===
