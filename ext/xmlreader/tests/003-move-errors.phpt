@@ -1,4 +1,13 @@
 --TEST--
+XMLReader: libxml2 XML Reader, Move cursor to an attribute, with invalid arguments
+--CREDITS--
+Mark Baker mark@lange.demon.co.uk at the PHPNW2017 Conference for PHP Testfest 2017
+--SKIPIF--
+<?php if (!extension_loaded("xmlreader")) print "skip"; ?>
+--FILE--
+<?php
+// Set up test data in a new file
+$xmlstring = '<?xml version="1.0" encoding="UTF-8"?>
 <books><book num="1" idx="2">book1</book></books>';
 $filename = dirname(__FILE__) . '/_014.xml';
 file_put_contents($filename, $xmlstring);

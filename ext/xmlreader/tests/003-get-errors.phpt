@@ -1,5 +1,7 @@
 --TEST--
 XMLReader: libxml2 XML Reader, Get an attribute, with invalid arguments
+--CREDITS--
+Mark Baker mark@lange.demon.co.uk at the PHPNW2017 Conference for PHP Testfest 2017
 --SKIPIF--
 <?php if (!extension_loaded("xmlreader")) print "skip"; ?>
 --FILE--

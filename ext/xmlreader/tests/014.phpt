@@ -1,5 +1,7 @@
 --TEST--
 XMLReader: libxml2 XML Reader, read-only element values can not be modified
+--CREDITS--
+Mark Baker mark@lange.demon.co.uk at the PHPNW2017 Conference for PHP Testfest 2017
 --SKIPIF--
 <?php if (!extension_loaded("xmlreader")) print "skip"; ?>
 --FILE--
