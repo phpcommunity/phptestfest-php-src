@@ -1,5 +1,7 @@
 --TEST--
 Test __set_state magic method for recreating a DatePeriod object
+--CREDITS--
+Mark Baker mark@lange.demon.co.uk at the PHPNW2017 Conference for PHP Testfest 2017
 --FILE--
 <?php
 
