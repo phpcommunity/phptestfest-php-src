@@ -1,5 +1,7 @@
 --TEST--
 SplDoublyLinkedList Iterating a DLL by reference shouldn't be permitted
+--CREDITS--
+Mark Baker mark@lange.demon.co.uk at the PHPNW2017 Conference for PHP Testfest 2017
 --FILE--
 <?php
 
