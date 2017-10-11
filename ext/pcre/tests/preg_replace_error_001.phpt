@@ -17,5 +17,5 @@ preg_replace_callback_array(
      $subject
 );
 ?>
---EXPECT--
+--EXPECTF--
 Warning: preg_replace_callback_array(): Delimiter must not be alphanumeric or backslash in %s on line %d
