@@ -1,5 +1,7 @@
 --TEST--
 readline_info(): Basic test
+--CREDITS--
+Burak Çakırel @burakcakirel - Istanbul PHP UG - PHP Testfest 2017
 --SKIPIF--
 <?php if (!extension_loaded("readline")) die("skip");
 if (READLINE_LIB == "libedit") die("skip readline only");
