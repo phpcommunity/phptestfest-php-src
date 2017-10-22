@@ -13,6 +13,11 @@ echo "\n-- Testing json_decode() function with more than expected no. of argumen
 $extra_arg = 10;
 var_dump(json_decode('"abc"', true, 512, 0, $extra_arg));
 
+echo "*** Testing json_decode() : error depth is zero ***\n";
+var_dump(json_decode('{}', false, 0));
+
+echo "*** Testing json_decode() : error depth is lower than zero ***\n";
+var_dump(json_decode('{}', false, -1));
 ?>
 ===Done===
 --EXPECTF--
@@ -26,5 +31,13 @@ NULL
 -- Testing json_decode() function with more than expected no. of arguments --
 
 Warning: json_decode() expects at most 4 parameters, 5 given in %s on line %d
+NULL
+*** Testing json_decode() : error depth is zero ***
+
+Warning: json_decode(): Depth must be greater than zero in %s on line %s
+NULL
+*** Testing json_decode() : error depth is lower than zero ***
+
+Warning: json_decode(): Depth must be greater than zero in %s on line %s
 NULL
 ===Done===
