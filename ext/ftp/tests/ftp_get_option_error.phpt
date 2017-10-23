@@ -17,14 +17,9 @@ ftp_login($ftp, 'user', 'pass');
 echo "*** Test by calling method or function width bad arguments ***\n";
 
 var_dump(ftp_get_option( $ftp, FOO_BAR ) );
-
-var_dump(ftp_get_option( null, FTP_TIMEOUT_SEC ) );
 ?>
 --EXPECTF--
 *** Test by calling method or function width bad arguments ***
 
 Warning: ftp_get_option(): Unknown option '12' in %s
 bool(false)
-
-Warning: ftp_get_option() expects parameter 1 to be resource, null given in %s
-NULL
