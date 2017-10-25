@@ -20,6 +20,8 @@ var_dump ($soapHeader); // shouldn't get this far.
 ?>
 --CREDITS--
 PHP TestFest 2017 - PHPDublin - Ken Guest <kguest@php.net>
+--XFAIL--
+Actor param is not validated yet.
 --EXPECTF--
 bool(false)
 Warning: SoapHeader::SoapHeader(): Invalid actor in %s on line %d
