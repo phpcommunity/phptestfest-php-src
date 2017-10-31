@@ -408,10 +408,15 @@ ZEND_API int zend_ast_evaluate(zval *result, zend_ast *ast, zend_class_entry *sc
 			}
 			break;
 		case ZEND_AST_ARRAY:
-			array_init(result);
 			{
 				uint32_t i;
 				zend_ast_list *list = zend_ast_get_list(ast);
+
+				if (!list->children) {
+					ZVAL_EMPTY_ARRAY(result);
+					break;
+				}
+				array_init(result);
 				for (i = 0; i < list->children; i++) {
 					zend_ast *elem = list->child[i];
 					if (elem->child[1]) {
@@ -554,7 +559,7 @@ ZEND_API zend_ast_ref *zend_ast_copy(zend_ast *ast)
 	tree_size = zend_ast_tree_size(ast) + sizeof(zend_ast_ref);
 	ref = emalloc(tree_size);
 	zend_ast_tree_copy(ast, GC_AST(ref));
-	GC_REFCOUNT(ref) = 1;
+	GC_SET_REFCOUNT(ref, 1);
 	GC_TYPE_INFO(ref) = IS_CONSTANT_AST;
 	return ref;
 }

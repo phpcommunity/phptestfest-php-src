@@ -394,7 +394,7 @@ static int php_array_data_compare(const void *a, const void *b) /* {{{ */
 	}
 
 	ZEND_ASSERT(Z_TYPE(result) == IS_LONG);
-	return Z_LVAL(result);
+	return ZEND_NORMALIZE_BOOL(Z_LVAL(result));
 }
 /* }}} */
 
@@ -779,7 +779,6 @@ PHP_FUNCTION(count)
 	zval *array;
 	zend_long mode = COUNT_NORMAL;
 	zend_long cnt;
-	zval *element;
 
 	ZEND_PARSE_PARAMETERS_START(1, 2)
 		Z_PARAM_ZVAL(array)
@@ -2568,7 +2567,7 @@ static void php_compact_var(HashTable *eg_active_symbol_table, zval *return_valu
 		if (zend_string_equals_literal(Z_STR_P(entry), "this")) {
 			zend_object *object = zend_get_this_object(EG(current_execute_data));
 			if (object) {
-				GC_REFCOUNT(object)++;
+				GC_ADDREF(object);
 				ZVAL_OBJ(&data, object);
 				zend_hash_update(Z_ARRVAL_P(return_value), Z_STR_P(entry), &data);
 			}
@@ -2654,13 +2653,13 @@ PHP_FUNCTION(array_fill)
 
 			array_init_size(return_value, (uint32_t)(start_key + num));
 			zend_hash_real_init(Z_ARRVAL_P(return_value), 1);
-			Z_ARRVAL_P(return_value)->nNumUsed = start_key + num;
-			Z_ARRVAL_P(return_value)->nNumOfElements = num;
-			Z_ARRVAL_P(return_value)->nInternalPointer = start_key;
-			Z_ARRVAL_P(return_value)->nNextFreeElement = start_key + num;
+			Z_ARRVAL_P(return_value)->nNumUsed = (uint32_t)(start_key + num);
+			Z_ARRVAL_P(return_value)->nNumOfElements = (uint32_t)num;
+			Z_ARRVAL_P(return_value)->nInternalPointer = (uint32_t)start_key;
+			Z_ARRVAL_P(return_value)->nNextFreeElement = (zend_long)(start_key + num);
 
 			if (Z_REFCOUNTED_P(val)) {
-				GC_REFCOUNT(Z_COUNTED_P(val)) += num;
+				GC_ADDREF_EX(Z_COUNTED_P(val), (uint32_t)num);
 			}
 
 			p = Z_ARRVAL_P(return_value)->arData;
@@ -2681,7 +2680,7 @@ PHP_FUNCTION(array_fill)
 			array_init_size(return_value, (uint32_t)num);
 			zend_hash_real_init(Z_ARRVAL_P(return_value), 0);
 			if (Z_REFCOUNTED_P(val)) {
-				GC_REFCOUNT(Z_COUNTED_P(val)) += num;
+				GC_ADDREF_EX(Z_COUNTED_P(val), (uint32_t)num);
 			}
 			zend_hash_index_add_new(Z_ARRVAL_P(return_value), start_key, val);
 			while (--num) {
@@ -2690,7 +2689,7 @@ PHP_FUNCTION(array_fill)
 			}
 		}
 	} else if (EXPECTED(num == 0)) {
-		array_init(return_value);
+		ZVAL_EMPTY_ARRAY(return_value);
 		return;
 	} else {
 		php_error_docref(NULL, E_WARNING, "Number of elements can't be negative");
@@ -2949,7 +2948,7 @@ static void php_array_data_shuffle(zval *array) /* {{{ */
 	Bucket *p, temp;
 	HashTable *hash;
 	zend_long rnd_idx;
-	zend_long n_left;
+	uint32_t n_left;
 
 	n_elems = zend_hash_num_elements(Z_ARRVAL_P(array));
 
@@ -3546,7 +3545,7 @@ PHP_FUNCTION(array_slice)
 
 	/* Clamp the offset.. */
 	if (offset > num_in) {
-		array_init(return_value);
+		ZVAL_EMPTY_ARRAY(return_value);
 		return;
 	} else if (offset < 0 && (offset = (num_in + offset)) < 0) {
 		offset = 0;
@@ -3560,7 +3559,7 @@ PHP_FUNCTION(array_slice)
 	}
 
 	if (length <= 0) {
-		array_init(return_value);
+		ZVAL_EMPTY_ARRAY(return_value);
 		return;
 	}
 
@@ -4014,6 +4013,7 @@ PHP_FUNCTION(array_values)
 	zval	 *input,		/* Input array */
 			 *entry;		/* An entry in the input array */
 	zend_array *arrval;
+	zend_long arrlen;
 
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		Z_PARAM_ARRAY(input)
@@ -4022,12 +4022,14 @@ PHP_FUNCTION(array_values)
 	arrval = Z_ARRVAL_P(input);
 
 	/* Return empty input as is */
-	if (!zend_hash_num_elements(arrval)) {
+	arrlen = zend_hash_num_elements(arrval);
+	if (!arrlen) {
 		RETURN_ZVAL(input, 1, 0);
 	}
 
 	/* Return vector-like packed arrays as-is */
-	if (HT_IS_PACKED(arrval) && HT_IS_WITHOUT_HOLES(arrval)) {
+	if (HT_IS_PACKED(arrval) && HT_IS_WITHOUT_HOLES(arrval) &&
+		arrval->nNextFreeElement == arrlen) {
 		RETURN_ZVAL(input, 1, 0);
 	}
 
@@ -4312,7 +4314,7 @@ PHP_FUNCTION(array_pad)
 
 	num_pads = pad_size_abs - input_size;
 	if (Z_REFCOUNTED_P(pad_value)) {
-		GC_REFCOUNT(Z_COUNTED_P(pad_value)) += num_pads;
+		GC_ADDREF_EX(Z_COUNTED_P(pad_value), num_pads);
 	}
 
 	array_init_size(return_value, pad_size_abs);
@@ -6317,12 +6319,12 @@ PHP_FUNCTION(array_combine)
 		RETURN_FALSE;
 	}
 
-	array_init_size(return_value, num_keys);
-
 	if (!num_keys) {
+		ZVAL_EMPTY_ARRAY(return_value);
 		return;
 	}
 
+	array_init_size(return_value, num_keys);
 	ZEND_HASH_FOREACH_VAL(keys, entry_keys) {
 		while (1) {
 			if (pos_values >= values->nNumUsed) {

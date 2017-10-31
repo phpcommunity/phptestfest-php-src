@@ -472,8 +472,8 @@ ZEND_FUNCTION(func_get_args)
 
 	arg_count = ZEND_CALL_NUM_ARGS(ex);
 
-	array_init_size(return_value, arg_count);
 	if (arg_count) {
+		array_init_size(return_value, arg_count);
 		first_extra_arg = ex->func->op_array.num_args;
 		zend_hash_real_init(Z_ARRVAL_P(return_value), 1);
 		ZEND_HASH_FILL_PACKED(Z_ARRVAL_P(return_value)) {
@@ -512,6 +512,8 @@ ZEND_FUNCTION(func_get_args)
 			}
 		} ZEND_HASH_FILL_END();
 		Z_ARRVAL_P(return_value)->nNumOfElements = arg_count;
+	} else {
+		ZVAL_EMPTY_ARRAY(return_value);
 	}
 }
 /* }}} */
@@ -1527,7 +1529,7 @@ ZEND_FUNCTION(class_alias)
 
 	if (ce) {
 		if (ce->type == ZEND_USER_CLASS) {
-			if (zend_register_class_alias_ex(alias_name, alias_name_len, ce) == SUCCESS) {
+			if (zend_register_class_alias_ex(alias_name, alias_name_len, ce, 0) == SUCCESS) {
 				RETURN_TRUE;
 			} else {
 				zend_error(E_WARNING, "Cannot declare %s %s, because the name is already in use", zend_get_object_type(ce), alias_name);
@@ -2122,11 +2124,11 @@ static void debug_backtrace_get_args(zend_execute_data *call, zval *arg_array) /
 {
 	uint32_t num_args = ZEND_CALL_NUM_ARGS(call);
 
-	array_init_size(arg_array, num_args);
 	if (num_args) {
 		uint32_t i = 0;
 		zval *p = ZEND_CALL_ARG(call, 1);
 
+		array_init_size(arg_array, num_args);
 		zend_hash_real_init(Z_ARRVAL_P(arg_array), 1);
 		ZEND_HASH_FILL_PACKED(Z_ARRVAL_P(arg_array)) {
 			if (call->func->type == ZEND_USER_FUNCTION) {
@@ -2184,6 +2186,8 @@ static void debug_backtrace_get_args(zend_execute_data *call, zval *arg_array) /
 			}
 		} ZEND_HASH_FILL_END();
 		Z_ARRVAL_P(arg_array)->nNumOfElements = num_args;
+	} else {
+		ZVAL_EMPTY_ARRAY(arg_array);
 	}
 }
 /* }}} */

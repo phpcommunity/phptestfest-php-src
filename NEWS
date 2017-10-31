@@ -12,6 +12,8 @@ PHP                                                                        NEWS
     error_log set to "syslog"). (Philip Prindeville)
   . Fixed bug #75220 (Segfault when calling is_callable on parent). 
     (andrewnester)
+  . Fixed bug #69954 (broken links and unused config items in distributed ini
+    files). (petk)
 
 - BCMath:
   . Fixed bug #66364 (BCMath bcmul ignores scale parameter). (cmb)
@@ -24,6 +26,9 @@ PHP                                                                        NEWS
   . Implemented FR #74668: Add DateTime::createFromImmutable() method.
     (majkl578, Rican7)
   . Fixed bug #75222 (DateInterval microseconds property always 0). (jhdxr)
+
+- DBA:
+  . Fixed bug #75264 (compiler warnings emitted). (petk)
 
 - cURL:
   . Fixed bug #74125 (Fixed finding CURL on systems with multiarch support).
@@ -38,6 +43,12 @@ PHP                                                                        NEWS
 - intl:
   . Fixed bug #75317 (UConverter::setDestinationEncoding changes source instead 
     of destination). (andrewnester)
+
+- interbase:
+  . Fixed bug #75453 (Incorrect reflection for ibase_[p]connect). (villfa)
+
+- JSON:
+  . Added JSON_THROW_ON_ERROR flag. (Andrea)
 
 - LDAP:
   . Added ldap_exop_refresh helper for EXOP REFRESH operation with dds overlay. 
@@ -61,6 +72,9 @@ PHP                                                                        NEWS
 - ODBC:
   . Removed support for ODBCRouter. (Kalle)
   . Removed support for Birdstep. (Kalle)
+
+- OpenSSL:
+  . Fixed bug #75307 (Wrong reflection for openssl_open function). (villfa)
 
 - PDO_DBlib:
   . Implemented request #69592 (allow 0-column rowsets to be skipped
@@ -92,6 +106,9 @@ PHP                                                                        NEWS
   . Fixed bug #74941 (session fails to start after having headers sent). 
     (morozov)
 
+- SOAP:
+  . Fixed bug #75464 (Wrong reflection on SoapClient::__setSoapHeaders). (villfa)
+
 - SPL:
   . Fixed bug #74977 (Appending AppendIterator leads to segfault). 
     (Andrew Nester)
@@ -101,5 +118,8 @@ PHP                                                                        NEWS
 - Standard:
   . Fixed unzserialize(), to disable creation of unsupported data structures
     through manually crafted strings. (Dmitry)
+
+- Zlib:
+  . Added zlib/level context option for compress.zlib wrapper. (Sara)
 
 <<< NOTE: Insert NEWS from last stable release here prior to actual release! >>>
