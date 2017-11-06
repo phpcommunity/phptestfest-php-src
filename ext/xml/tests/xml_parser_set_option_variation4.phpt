@@ -15,14 +15,10 @@ if (!extension_loaded("xml")) {
 $xmlParser = xml_parser_create();
 
 var_dump(xml_parser_set_option($xmlParser, XML_OPTION_SKIP_WHITE, 1));
-var_dump(xml_parser_set_option($xmlParser, XML_OPTION_SKIP_WHITE, 0));
-var_dump(xml_parser_set_option($xmlParser, XML_OPTION_TARGET_ENCODING, 'UTF-8'));
 var_dump(xml_parser_set_option($xmlParser, XML_OPTION_TARGET_ENCODING, 'Invalid Encoding'));
 
 ?>
 --EXPECTF--
-bool(true)
-bool(true)
 bool(true)
 
 Warning: xml_parser_set_option(): Unsupported target encoding "Invalid Encoding" in %s on line %d
