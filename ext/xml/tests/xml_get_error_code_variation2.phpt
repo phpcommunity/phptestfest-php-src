@@ -13,12 +13,12 @@ if (!extension_loaded("xml")) {
 <?php
 
 $xmlParser = xml_parser_create();
-$xmlData = '<data><fruit>apple</fruit><bad>missing closing</data>';
+$xmlData = '<data><fruit>apple</fruit></data>';
 
 $isSuccess = xml_parse($xmlParser, $xmlData, true);
 
-var_dump(xml_get_error_code($xmlParser));
+var_dump(xml_get_error_code($xmlParser) == XML_ERROR_NONE);
 
 ?>
 --EXPECT--
-int(76)
+bool(true)
