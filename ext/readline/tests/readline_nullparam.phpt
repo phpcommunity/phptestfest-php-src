@@ -11,3 +11,4 @@ http://phpsp.org.br/
 $line = readline(null);
 ?>
 --EXPECTF--
+Warning: readline() expects parameter 1 to be string, null given in %s on line %d
