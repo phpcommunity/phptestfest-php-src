@@ -15,7 +15,7 @@ if (substr(PHP_OS, 0, 3) == 'WIN') {
 ?>
 --FILE--
 <?php
-$domains = array('php.net', 'doc.php.net', 'stackoverflow.com');
+$domains = array('php.net', 'doc.php.net', 'secure.php.net');
 foreach ($domains as $domain) {
     if (getmxrr($domain, $hosts, $weights)) {
         echo "Domain: ".$domain.", Hosts: " . count($hosts) . ", weights: " . count($weights) . "\n";
