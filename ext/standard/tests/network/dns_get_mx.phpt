@@ -2,7 +2,8 @@
 bool dns_get_mx ( string $hostname , array &$mxhosts [, array &$weight ] );
 --CREDITS--
 marcosptf - <marcosptf@yahoo.com.br> - @phpsp - sao paulo - br
---SKIPIF--
+lucasf - <lucasferreira241@gmail.com> - @phpsp - sao paulo - br
+ --SKIPIF--
 <?php
 if (getenv("SKIP_SLOW_TESTS"))
     die("skip slow test");
@@ -14,14 +15,14 @@ if (substr(PHP_OS, 0, 3) == 'WIN') {
 ?>
 --FILE--
 <?php
-$domains = array('php.net', 'doc.php.net', 'wiki.php.net');
+$domains = array('php.net', 'doc.php.net', 'stackoverflow.com');
 foreach ($domains as $domain) {
     if (getmxrr($domain, $hosts, $weights)) {
-        echo "Hosts: " . count($hosts) . ", weights: " . count($weights) . "\n";
+        echo "Domain: ".$domain.", Hosts: " . count($hosts) . ", weights: " . count($weights) . "\n";
     }
 }
 ?>
 --EXPECTF--
-Hosts: %i, weights: %i
-Hosts: %i, weights: %i
-Hosts: %i, weights: %i
+Domain: %s, Hosts: %i, weights: %i
+Domain: %s, Hosts: %i, weights: %i
+Domain: %s, Hosts: %i, weights: %i
