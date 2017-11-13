@@ -1,5 +1,7 @@
 --TEST--
 Test incremental inflate_add() functionality
+--INI--
+max_execution_time=10
 --SKIPIF--
 <?php
 if (!extension_loaded("zlib")) {
