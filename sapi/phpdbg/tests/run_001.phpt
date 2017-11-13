@@ -54,5 +54,7 @@ prompt>
 1 2 3
 --FILE--
 <?php
-
+if is_null($argc) || is_null($argv) {
+  die("Error. No parameters inserted!");
+}
 var_dump($argc, $argv);
