@@ -26,6 +26,3 @@ var_dump(in_array($filter, $streamlist));
 --EXPECT--
 array
 bool(true)
-
-
-Increased the coverage lines 587-595 in file ext/posix/posix.c
