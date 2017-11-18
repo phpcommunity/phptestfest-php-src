@@ -3,6 +3,10 @@ Testing dns_get_mx
 --CREDITS--
 Alessandro Manno <alessandromanno96 [at] gmail [dot] com>
 #phptestfest2017
+--SKIPIF--
+<?php
+if (getenv("SKIP_ONLINE_TESTS")) { die('skip: online test'); }
+?>
 --FILE--
 <?php
 $hostname = 'gmail.com';
