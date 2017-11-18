@@ -1,7 +1,8 @@
 --TEST--
 ReflectionMethod->isArray()
 --CREDITS--
-Claudio Marcandalli
+Claudio Marcandalli c.marcandalli at libero dot it
+#phptestfest2017
 --FILE--
 <?php
 class TestClass {
