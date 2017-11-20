@@ -1,7 +1,7 @@
 --TEST--
 readline() function - with input
 --CREDITS--
-Jonathan Stevens <info at jonathanstevens dot com>
+Jonathan Stevens <info at jonathanstevens dot be>
 --SKIPIF--
 <?php if (!extension_loaded("readline") || !function_exists('readline') || die("skip"); ?>
 --STDIN--
