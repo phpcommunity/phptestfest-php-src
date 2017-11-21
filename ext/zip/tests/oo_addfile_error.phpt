@@ -1,6 +1,6 @@
 --TEST--
 ziparchive::addFile() failure test
--- CREDITS --
+--CREDITS--
 Ward Cappelle <wardcappelle@gmail.com>
 User Group: PHP-WVL & PHPGent #PHPTestFest
 --SKIPIF--
