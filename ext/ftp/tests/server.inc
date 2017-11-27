@@ -356,6 +356,12 @@ if ($pid) {
 				fputs($s, "550 No file named \"{$matches [1]}\"\r\n");
 				break;
 			}
+        } elseif (preg_match('/^DELE ([\w\h]+)/', $buf, $matches)) {
+            if (!in_array($matches [1], ['file1', 'file1', "file\nb0rk"])){
+                fputs($s, "550 No such file or directory\r\n");
+            }
+
+            fputs($s, "250 Delete successful\r\n");
 		}elseif (preg_match('/^RETR ([\w\h]+)/', $buf, $matches)) {
 			if(!empty($pasv)){
 				;
