@@ -357,7 +357,7 @@ if ($pid) {
 				break;
 			}
         } elseif (preg_match('/^DELE ([\w\h]+)/', $buf, $matches)) {
-            if (!in_array($matches [1], ['file1', 'file1', "file\nb0rk"])){
+            if (!in_array($matches [1], ['file1', "file\nb0rk"])){
                 fputs($s, "550 No such file or directory\r\n");
             }
 
