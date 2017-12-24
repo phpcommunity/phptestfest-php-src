@@ -18,7 +18,13 @@ function unicode_info($cp) {
     'isxdigit', 'ispunct', 'ispunct', 'isgraph',
     'isblank', 'isdefined', 'isspace', 'iscntrl',
     'isMirrored', 'isIDStart', 'isIDPart',
-    'getBlockCode', 'charName',
+    'getBlockCode', 'charName', 'chr', 'digit',
+    'getFC_NFKC_Closure', 'isJavaSpaceChar',
+    'isISOControl', 'isprint', 'isbase',
+    'isIDIgnorable', 'isJavaIDStart', 'isJavaIDPart',
+    'charDirection', 'charType', 'getCombiningClass',
+    'charDigitValue', 'charMirror', 'tolower',
+    'toupper', 'totitle'
   );
 
   $ncp = IntlChar::ord($cp);
@@ -71,6 +77,24 @@ Codepoint U+0050
   isIDPart(): bool(true)
   getBlockCode(): int(1)
   charName(): string(22) "LATIN CAPITAL LETTER P"
+  chr(): string(1) "P"
+  digit(): bool(false)
+  getFC_NFKC_Closure(): string(0) ""
+  isJavaSpaceChar(): bool(false)
+  isISOControl(): bool(false)
+  isprint(): bool(true)
+  isbase(): bool(true)
+  isIDIgnorable(): bool(false)
+  isJavaIDStart(): bool(true)
+  isJavaIDPart(): bool(true)
+  charDirection(): int(0)
+  charType(): int(1)
+  getCombiningClass(): int(0)
+  charDigitValue(): int(-1)
+  charMirror(): string(1) "P"
+  tolower(): string(1) "p"
+  toupper(): string(1) "P"
+  totitle(): string(1) "P"
   charAge(): 1.1.0.0
 
 Codepoint U+00df
@@ -99,6 +123,24 @@ Codepoint U+00df
   isIDPart(): bool(true)
   getBlockCode(): int(2)
   charName(): string(26) "LATIN SMALL LETTER SHARP S"
+  chr(): string(2) "ß"
+  digit(): bool(false)
+  getFC_NFKC_Closure(): string(0) ""
+  isJavaSpaceChar(): bool(false)
+  isISOControl(): bool(false)
+  isprint(): bool(true)
+  isbase(): bool(true)
+  isIDIgnorable(): bool(false)
+  isJavaIDStart(): bool(true)
+  isJavaIDPart(): bool(true)
+  charDirection(): int(0)
+  charType(): int(2)
+  getCombiningClass(): int(0)
+  charDigitValue(): int(-1)
+  charMirror(): int(223)
+  tolower(): int(223)
+  toupper(): int(223)
+  totitle(): int(223)
   charAge(): 1.1.0.0
 
 Codepoint U+2603
@@ -127,4 +169,22 @@ Codepoint U+2603
   isIDPart(): bool(false)
   getBlockCode(): int(55)
   charName(): string(7) "SNOWMAN"
+  chr(): string(3) "☃"
+  digit(): bool(false)
+  getFC_NFKC_Closure(): string(0) ""
+  isJavaSpaceChar(): bool(false)
+  isISOControl(): bool(false)
+  isprint(): bool(true)
+  isbase(): bool(false)
+  isIDIgnorable(): bool(false)
+  isJavaIDStart(): bool(false)
+  isJavaIDPart(): bool(false)
+  charDirection(): int(10)
+  charType(): int(27)
+  getCombiningClass(): int(0)
+  charDigitValue(): int(-1)
+  charMirror(): int(9731)
+  tolower(): int(9731)
+  toupper(): int(9731)
+  totitle(): int(9731)
   charAge(): 1.1.0.0
