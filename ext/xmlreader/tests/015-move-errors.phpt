@@ -23,8 +23,6 @@ while ($reader->read()) {
     if ($reader->nodeType != XMLREADER::END_ELEMENT) {
         // Find the book node
         if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'book') {
-            // Test for call without arguments
-            $attr = $reader->moveToAttributeNs();
             // Test for missing namespace argument
             $attr = $reader->moveToAttributeNs('idx', null);
         }
@@ -37,7 +35,5 @@ unlink($filename);
 ?>
 ===DONE===
 --EXPECTF--
-Warning: XMLReader::moveToAttributeNs() expects exactly 2 parameters, 0 given in %s on line %d
-
 Warning: XMLReader::moveToAttributeNs(): Attribute Name and Namespace URI cannot be empty in %s on line %d
 ===DONE===

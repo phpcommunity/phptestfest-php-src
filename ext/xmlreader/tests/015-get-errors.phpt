@@ -25,12 +25,6 @@ while ($reader->read()) {
         if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'book') {
             $attr = $reader->moveToNextAttribute();
 
-            // Test for call without arguments
-            $attr = $reader->getAttributeNs();
-            var_dump($attr);
-            echo $reader->name . ": ";
-            echo $reader->value . "\n";
-
             // Test for missing namespace argument
             $attr = $reader->getAttributeNs('idx', null);
             var_dump($attr);
@@ -46,10 +40,6 @@ unlink($filename);
 ?>
 ===DONE===
 --EXPECTF--
-Warning: XMLReader::getAttributeNs() expects exactly 2 parameters, 0 given in %s on line %d
-NULL
-ns1:num: 1
-
 Warning: XMLReader::getAttributeNs(): Attribute Name and Namespace URI cannot be empty in %s on line %d
 bool(false)
 ns1:num: 1

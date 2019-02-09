@@ -30,13 +30,6 @@ while ($reader->read()) {
             echo $reader->name . ": ";
             echo $reader->value . "\n";
 
-            // Test for call without arguments
-            $attr = $reader->getAttribute();
-            var_dump($attr);        // NULL for failure without args
-            // Ensure that node pointer has not changed position
-            echo $reader->name . ": ";
-            echo $reader->value . "\n";
-
             // Test for call with an empty string argument
             $attr = $reader->getAttribute('');
             var_dump($attr);
@@ -47,13 +40,6 @@ while ($reader->read()) {
             // Test for call by name for an attribute that doesn't exist
             $attr = $reader->getAttribute('isbn');
             var_dump($attr);        // NULL expected
-            // Ensure that node pointer has not changed position
-            echo $reader->name . ": ";
-            echo $reader->value . "\n";
-
-            // Test for call by number without arguments
-            $attr = $reader->getAttributeNo();
-            var_dump($attr);        // NULL for failure without args
             // Ensure that node pointer has not changed position
             echo $reader->name . ": ";
             echo $reader->value . "\n";
@@ -78,17 +64,9 @@ book
 bool(true)
 num: 1
 
-Warning: XMLReader::getAttribute() expects exactly 1 parameter, 0 given in %s on line %d
-NULL
-num: 1
-
 Warning: XMLReader::getAttribute(): Argument cannot be an empty string in %s on line %d
 bool(false)
 num: 1
-NULL
-num: 1
-
-Warning: XMLReader::getAttributeNo() expects exactly 1 parameter, 0 given in %s on line %d
 NULL
 num: 1
 NULL
